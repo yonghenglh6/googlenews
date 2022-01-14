@@ -1,5 +1,7 @@
 import scrapy
 from scrapy.http.response.html import HtmlResponse
+from googlenews.analyzer import analyze
+from scrapy.shell import inspect_response
 class GoogleNewsSpider(scrapy.Spider):
     name = "googlenews"
     start_urls = [
@@ -38,5 +40,10 @@ class GoogleNewsSpider(scrapy.Spider):
         yield scrapy.Request(response.urljoin(jump_url), self.parse_article, cb_kwargs=kwargs)
 
     def parse_article(self, response:HtmlResponse, **kwargs):
-        itemdata = kwargs['itemdata']
-        yield itemdata
+        parse_result = analyze(response, **kwargs)
+        print(parse_result)
+        if parse_result is None:
+            self.logger.warning('解析失败 %s', response.url)
+            return
+        else:
+            yield parse_result
