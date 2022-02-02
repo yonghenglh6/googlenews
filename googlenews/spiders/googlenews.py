@@ -40,10 +40,12 @@ class GoogleNewsSpider(scrapy.Spider):
         yield scrapy.Request(response.urljoin(jump_url), self.parse_article, cb_kwargs=kwargs)
 
     def parse_article(self, response:HtmlResponse, **kwargs):
+        itemdata = kwargs['itemdata']
         parse_result = analyze(response, **kwargs)
-        print(parse_result)
         if parse_result is None:
             self.logger.warning('解析失败 %s', response.url)
-            return
+            yield itemdata
         else:
-            yield parse_result
+            itemdata.update(parse_result)
+            itemdata['file_urls'] = parse_result['image_urls'] + parse_result['video_url']
+            yield itemdata

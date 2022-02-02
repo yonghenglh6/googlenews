@@ -47,12 +47,19 @@ COOKIES_ENABLED = False
 #SPIDER_MIDDLEWARES = {
 #    'googlenews.middlewares.GooglenewsSpiderMiddleware': 543,
 #}
+# SPIDER_MIDDLEWARES = {
+#    'googlenews.proxymiddleware.RandomProxyMiddleware': 543,
+# }
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
 #    'googlenews.middlewares.GooglenewsDownloaderMiddleware': 543,
 #}
+# DOWNLOADER_MIDDLEWARES = {
+#    'googlenews.proxymiddleware.RandomProxyMiddleware': 544,
+# }
+
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -65,7 +72,10 @@ COOKIES_ENABLED = False
 #ITEM_PIPELINES = {
 #    'googlenews.pipelines.GooglenewsPipeline': 300,
 #}
-
+ITEM_PIPELINES = {
+   'scrapy.pipelines.files.FilesPipeline': 1,
+}
+FILES_STORE = '/home/liuhao/workspace/1_googlenews/outputs/downloads'
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
 AUTOTHROTTLE_ENABLED = True
